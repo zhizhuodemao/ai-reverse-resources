@@ -8,3 +8,4 @@ coverage/
 dist/
 build/
 .tmp/
+dsh-js-reverse-plugin/skills
