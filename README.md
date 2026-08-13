@@ -91,18 +91,7 @@ claude plugin install <plugin-name>@ai-reverse-resources
 └── .github/workflows/           # dsh 包发布流水线（tag 触发）
 ```
 
-修改技能只动 `plugins/<name>/skills/`；三个生态的适配壳各自独立。新增插件的 dsh 适配时，在 `dsh/` 下建同名目录并在发布流水线的 matrix 中加一行。
-
-## 发布 dsh 包
-
-```bash
-# 1. 修改 dsh/js-reverse-plugin/package.json 的 version
-# 2. 打 tag 推送，CI 自动发布到 npm
-git tag dsh-js-reverse-plugin-v<version>
-git push origin dsh-js-reverse-plugin-v<version>
-```
-
-发布时 CI 从 `plugins/js-reverse-plugin/skills` 复制技能进包，仓库中不保留副本。
+修改技能只动 `plugins/<name>/skills/`；三个生态的适配壳各自独立。新增插件的 dsh 适配时，在 `dsh/` 下建同名目录。
 
 ## 当前内容
 
