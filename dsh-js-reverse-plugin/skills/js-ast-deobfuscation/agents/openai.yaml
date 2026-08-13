@@ -1,4 +1,0 @@
-interface:
-  display_name: "JS AST Deobfuscation"
-  short_description: "证据驱动、用户逐步决策的 JavaScript AST 解混淆"
-  default_prompt: "Use $js-ast-deobfuscation to profile and deobfuscate this JavaScript one evidence-backed step at a time."

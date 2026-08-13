@@ -1,4 +1,0 @@
-interface:
-  display_name: "iv8 JSVMP Recovery"
-  short_description: "以受控 iv8 Oracle 恢复并精确验证 JSVMP 语义"
-  default_prompt: "Use $iv8-jsvmp-recovery to recover this JSVMP from declared raw inputs to an independently reproducible final output."
