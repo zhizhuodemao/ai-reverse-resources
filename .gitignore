@@ -8,5 +8,5 @@ coverage/
 dist/
 build/
 .tmp/
-dsh-js-reverse-plugin/skills
+dsh/js-reverse-plugin/skills
 pnpm-lock.yaml

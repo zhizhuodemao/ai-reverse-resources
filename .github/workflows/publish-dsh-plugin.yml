@@ -1,17 +1,20 @@
-name: Publish dsh-js-reverse-plugin to npm
+name: Publish dsh bundles to npm
 
 on:
   push:
     tags:
-      - 'dsh-js-reverse-plugin-v*'
+      - 'dsh-*-v*'
 
 jobs:
   publish:
-    name: Publish to npm
+    name: Publish
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: dsh-js-reverse-plugin
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # One row per plugin. Add a row for each new dsh/<package> bundle.
+          - package: js-reverse-plugin
     permissions:
       contents: read
     steps:
@@ -22,16 +25,33 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org
 
+      - name: Match tag to package
+        id: select
+        run: |
+          if [[ "${{ github.ref_name }}" == "dsh-${{ matrix.package }}-v"* ]]; then
+            echo "match=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "match=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Sync skills from single source
-        run: cp -R ../plugins/js-reverse-plugin/skills ./skills
+        if: steps.select.outputs.match == 'true'
+        working-directory: dsh/${{ matrix.package }}
+        run: cp -R ../../plugins/${{ matrix.package }}/skills ./skills
 
       - name: Install dependencies
+        if: steps.select.outputs.match == 'true'
+        working-directory: dsh/${{ matrix.package }}
         run: npm install
 
       - name: Verify package contents
+        if: steps.select.outputs.match == 'true'
+        working-directory: dsh/${{ matrix.package }}
         run: npm pack --dry-run
 
       - name: Publish to npm
+        if: steps.select.outputs.match == 'true'
+        working-directory: dsh/${{ matrix.package }}
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
