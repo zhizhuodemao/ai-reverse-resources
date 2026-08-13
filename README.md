@@ -21,6 +21,15 @@ iv8-jsvmp-recovery
 
 插件同时注册 `js-reverse-mcp@4.0.1`，用于浏览器网络、源码、断点、调用栈、Scope、Frame 和运行状态取证。
 
+## 安装
+
+```bash
+codex plugin marketplace add zhizhuodemao/ai-reverse-resources
+codex plugin add js-reverse-plugin@ai-reverse-resources
+```
+
+安装后新建一个 Codex 任务，使插件提供的 Skills 和 MCP 服务进入新任务上下文。
+
 ## MCP 支持
 
 插件内置名为 `js-reverse` 的本地 stdio MCP 服务，安装后通过固定版本命令启动：
