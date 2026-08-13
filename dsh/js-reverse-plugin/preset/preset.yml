@@ -1,0 +1,3 @@
+name: 逆向模式
+description: JS 逆向工程 Agent：证据驱动、逐步决策，配备 iv8 受控执行与 js-reverse 浏览器取证。
+order: 2
