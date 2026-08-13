@@ -1,67 +1,61 @@
 # AI Reverse Resources
 
-AI 辅助逆向工程的插件与资源仓库。仓库以 Codex Marketplace 结构组织可独立安装的插件，并把 Skill、MCP 工具和独立评测资产分层保存。
-
-## 当前插件
-
-### `js-reverse-plugin`
-
-JavaScript 逆向工程插件，包含三个递进 Skill：
-
-```text
-js-ast-deobfuscation
-  → 外层 JavaScript 解混淆与 JSVMP 宿主边界
-
-iv8-env-runtime
-  → 受控 iv8 运行、环境配置与真实生成入口
-
-iv8-jsvmp-recovery
-  → 静态分析 + 动态 Trace + 独立精确复现
-```
-
-插件同时注册 `js-reverse-mcp@4.0.1`，用于浏览器网络、源码、断点、调用栈、Scope、Frame 和运行状态取证。
+面向 AI Agent 的逆向工程插件仓库，支持 Codex 和 Claude Code。当前提供 `js-reverse-plugin`。
 
 ## 安装
+
+### Codex CLI
 
 ```bash
 codex plugin marketplace add zhizhuodemao/ai-reverse-resources
 codex plugin add js-reverse-plugin@ai-reverse-resources
 ```
 
-安装后新建一个 Codex 任务，使插件提供的 Skills 和 MCP 服务进入新任务上下文。
+安装后启动新的 Codex 会话。
 
-## MCP 支持
+### Codex App
 
-插件内置名为 `js-reverse` 的本地 stdio MCP 服务，安装后通过固定版本命令启动：
+1. 在终端添加 Marketplace：
 
-```text
-npx -y js-reverse-mcp@4.0.1
+   ```bash
+   codex plugin marketplace add zhizhuodemao/ai-reverse-resources
+   ```
+
+2. 重启 ChatGPT 桌面端，进入 Codex 的 **Plugins**。
+3. 选择 **AI Reverse Resources**，安装 **JS Reverse Plugin**。
+4. 新建任务。
+
+### Claude Code CLI
+
+```bash
+claude plugin marketplace add zhizhuodemao/ai-reverse-resources
+claude plugin install js-reverse-plugin@ai-reverse-resources
 ```
 
-它为三个 Skill 提供浏览器、源码、网络、断点和运行时取证能力。MCP 浏览器是动态观察与调试界面；受控 `iv8` 仍是确定性等价验收的唯一参考运行时。
+安装后启动新会话；如果在当前会话内安装，运行 `/reload-plugins`。
 
-## 仓库结构
+### Claude Code Desktop
 
-```text
-.agents/plugins/marketplace.json   仓库级 Marketplace 索引
-plugins/                           可安装插件
-evals/                             插件包外的独立评测资产
-```
+1. 在终端添加 Marketplace：
 
-每个插件自己保存 `.codex-plugin/plugin.json`、Skill 和 MCP 配置。评分规则、触发查询和测试运行记录保存在插件包外，不随 Skill 注入模型上下文。
+   ```bash
+   claude plugin marketplace add zhizhuodemao/ai-reverse-resources
+   ```
 
-## 设计原则
+2. 打开 Claude Desktop 的 **Code** 标签，选择 **+ → Plugins → Add plugin**。
+3. 从 **ai-reverse-resources** 安装 **js-reverse-plugin**。
 
-- Skill 提供模型无法凭空知道的领域背景、判断标准和边界。
-- MCP 提供确定的动态操作与证据接口，不代替模型判断任务语义。
-- Evals 验证结果质量、触发边界和证据判断，不验证模型是否服从固定流程。
-- 案例知识必须显式标注适用版本，不得冒充通用逆向规律。
-- 目标 JavaScript 强制以 iv8 为唯一受控执行底座；Node.js 只可用于格式化、AST 和构建等静态工程任务，不得替代 iv8 运行目标程序。
+Claude Code Desktop 的插件适用于本地和 SSH 会话，不适用于 cloud 或 WSL 会话。
+
+## 当前内容
+
+`js-reverse-plugin`：JavaScript AST 解混淆、受控 iv8 运行、JSVMP 恢复，以及 `js-reverse-mcp@4.0.1` 浏览器动态取证。
 
 ## 本地校验
 
 ```bash
 python3 scripts/validate_repository.py
+claude plugin validate .
 ```
 
-该命令校验 Marketplace、插件 Manifest、三个 Skill、MCP 配置和现有 eval 资产，不运行未知目标 JavaScript。
+安装说明依据 [Codex Plugins](https://learn.chatgpt.com/docs/plugins) 和 [Claude Code Plugins](https://code.claude.com/docs/en/discover-plugins)。

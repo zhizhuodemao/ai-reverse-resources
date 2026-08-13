@@ -1,6 +1,6 @@
 {
   "name": "js-reverse-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI-assisted JavaScript reverse engineering with AST deobfuscation, controlled iv8 execution, JSVMP semantic recovery, and browser debugging through js-reverse-mcp.",
   "author": {
     "name": "zhizhuodemao"

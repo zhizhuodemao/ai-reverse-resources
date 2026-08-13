@@ -1,0 +1,15 @@
+{
+  "name": "ai-reverse-resources",
+  "owner": {
+    "name": "zhizhuodemao"
+  },
+  "description": "AI-assisted reverse engineering plugins for Codex and Claude Code.",
+  "plugins": [
+    {
+      "name": "js-reverse-plugin",
+      "source": "./plugins/js-reverse-plugin",
+      "description": "JavaScript AST deobfuscation, controlled iv8 execution, JSVMP recovery, and browser evidence through js-reverse-mcp.",
+      "version": "0.2.0"
+    }
+  ]
+}

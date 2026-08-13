@@ -13,10 +13,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
+CLAUDE_MARKETPLACE_PATH = ROOT / ".claude-plugin" / "marketplace.json"
 PLUGIN_NAME = "js-reverse-plugin"
+PLUGIN_VERSION = "0.2.0"
 PLUGIN_ROOT = ROOT / "plugins" / PLUGIN_NAME
 PLUGIN_MANIFEST_PATH = PLUGIN_ROOT / ".codex-plugin" / "plugin.json"
+CLAUDE_PLUGIN_MANIFEST_PATH = PLUGIN_ROOT / ".claude-plugin" / "plugin.json"
 MCP_PATH = PLUGIN_ROOT / ".mcp.json"
+CLAUDE_MCP_PATH = PLUGIN_ROOT / ".claude-mcp.json"
 REQUIRED_SKILLS = {
     "js-ast-deobfuscation",
     "iv8-env-runtime",
@@ -78,6 +82,7 @@ def validate_plugin_manifest() -> None:
     manifest = load_json(PLUGIN_MANIFEST_PATH)
     require(manifest.get("name") == PLUGIN_NAME, "plugin name does not match folder")
     require(bool(SEMVER.fullmatch(str(manifest.get("version", "")))), "invalid semver")
+    require(manifest.get("version") == PLUGIN_VERSION, "wrong Codex plugin version")
     require(bool(manifest.get("description")), "plugin description is empty")
     require(manifest.get("skills") == "./skills/", "wrong skills path")
     require(manifest.get("mcpServers") == "./.mcp.json", "wrong MCP path")
@@ -110,6 +115,45 @@ def validate_mcp() -> None:
     require(
         server.get("args") == ["-y", "js-reverse-mcp@4.0.1"],
         "js-reverse MCP must remain pinned to 4.0.1",
+    )
+
+
+def validate_claude_marketplace() -> None:
+    marketplace = load_json(CLAUDE_MARKETPLACE_PATH)
+    require(marketplace.get("name") == "ai-reverse-resources", "wrong Claude marketplace name")
+    require(
+        marketplace.get("owner") == {"name": "zhizhuodemao"},
+        "wrong Claude marketplace owner",
+    )
+    require(bool(marketplace.get("description")), "Claude marketplace description is empty")
+    plugins = marketplace.get("plugins")
+    require(isinstance(plugins, list), "Claude marketplace plugins must be an array")
+    matches = [item for item in plugins if item.get("name") == PLUGIN_NAME]
+    require(len(matches) == 1, f"expected one {PLUGIN_NAME} Claude marketplace entry")
+    entry = matches[0]
+    require(entry.get("source") == f"./plugins/{PLUGIN_NAME}", "wrong Claude plugin source")
+    require(entry.get("version") == PLUGIN_VERSION, "wrong Claude marketplace version")
+    require(bool(entry.get("description")), "Claude marketplace description is empty")
+
+
+def validate_claude_plugin() -> None:
+    manifest = load_json(CLAUDE_PLUGIN_MANIFEST_PATH)
+    require(manifest.get("name") == PLUGIN_NAME, "wrong Claude plugin name")
+    require(manifest.get("version") == PLUGIN_VERSION, "wrong Claude plugin version")
+    require(manifest.get("mcpServers") == "./.claude-mcp.json", "wrong Claude MCP path")
+    require(bool(manifest.get("description")), "Claude plugin description is empty")
+
+    config = load_json(CLAUDE_MCP_PATH)
+    require(set(config) == {"mcpServers"}, "Claude MCP must use the mcpServers wrapper")
+    servers = config["mcpServers"]
+    require(isinstance(servers, dict), "Claude mcpServers must be an object")
+    require(set(servers) == {"js-reverse"}, "expected one Claude js-reverse server")
+    server = servers["js-reverse"]
+    require(isinstance(server, dict), "Claude js-reverse server must be an object")
+    require(server.get("command") == "npx", "Claude js-reverse command must be npx")
+    require(
+        server.get("args") == ["-y", "js-reverse-mcp@4.0.1"],
+        "Claude js-reverse MCP must remain pinned to 4.0.1",
     )
 
 
@@ -161,13 +205,15 @@ def validate_evals() -> None:
 
 def main() -> None:
     validate_marketplace()
+    validate_claude_marketplace()
     validate_plugin_manifest()
     validate_mcp()
+    validate_claude_plugin()
     validate_skills()
     validate_evals()
     print(
-        "OK: marketplace, js-reverse-plugin, 3 skills, js-reverse-mcp@4.0.1, "
-        "and 2 eval suites"
+        "OK: Codex and Claude marketplaces, js-reverse-plugin, 3 skills, "
+        "js-reverse-mcp@4.0.1, and 2 eval suites"
     )
 
 

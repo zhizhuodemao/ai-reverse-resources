@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "js-reverse-plugin",
+  "displayName": "JS Reverse Plugin",
+  "version": "0.2.0",
+  "description": "JavaScript AST deobfuscation, controlled iv8 execution, JSVMP recovery, and browser evidence through js-reverse-mcp.",
+  "author": {
+    "name": "zhizhuodemao",
+    "url": "https://github.com/zhizhuodemao"
+  },
+  "homepage": "https://github.com/zhizhuodemao/ai-reverse-resources",
+  "repository": "https://github.com/zhizhuodemao/ai-reverse-resources",
+  "keywords": [
+    "javascript",
+    "reverse-engineering",
+    "deobfuscation",
+    "iv8",
+    "jsvmp",
+    "mcp"
+  ],
+  "mcpServers": "./.claude-mcp.json"
+}
