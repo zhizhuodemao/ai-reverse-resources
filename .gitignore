@@ -9,3 +9,4 @@ dist/
 build/
 .tmp/
 dsh-js-reverse-plugin/skills
+pnpm-lock.yaml

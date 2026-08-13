@@ -1,6 +1,6 @@
 # AI Reverse Resources
 
-面向 AI Agent 的逆向工程插件仓库，支持 Codex 和 Claude Code。当前提供 `js-reverse-plugin`。
+面向 AI Agent 的逆向工程插件仓库，支持 Codex、Claude Code 和 DeepSeek Harness。当前提供 `js-reverse-plugin`。
 
 ## 安装全部（推荐）
 
@@ -49,6 +49,19 @@ claude plugin install js-reverse-plugin@ai-reverse-resources
 
 Claude Code Desktop 的插件适用于本地和 SSH 会话，不适用于 cloud 或 WSL 会话。
 
+### DeepSeek Harness (dsh)
+
+```bash
+dsh plugin add dsh-js-reverse-plugin
+```
+
+安装后启动新的 dsh 会话：
+
+- 三个技能出现在对话输入框 `/` 命令面板：`js-ast-deobfuscation`、`iv8-env-runtime`、`iv8-jsvmp-recovery`
+- MCP 工具注册为 `mcp__js-reverse__*`（如 `mcp__js-reverse__navigate_page`）
+
+DeepSeek Harness 没有插件市场；插件发布在 npm：[dsh-js-reverse-plugin](https://www.npmjs.com/package/dsh-js-reverse-plugin)。
+
 ## 自选安装
 
 添加 Marketplace 后，可以只安装需要的插件：
@@ -62,6 +75,32 @@ claude plugin install <plugin-name>@ai-reverse-resources
 ```
 
 当前可选插件：`js-reverse-plugin`。在 Codex App 或 Claude Code Desktop 中，也可以直接从插件浏览器选择安装，不会因为添加 Marketplace 而无提示安装全部插件。
+
+## 目录结构
+
+```text
+.
+├── plugins/js-reverse-plugin/   # 插件本体
+│   ├── skills/                  # ← 技能唯一来源，三个生态共享
+│   ├── .claude-plugin/          # Claude Code 插件清单
+│   └── .codex-plugin/           # Codex 插件清单
+├── .claude-plugin/              # Claude Code marketplace 清单
+├── dsh-js-reverse-plugin/       # DeepSeek Harness bundle（独立 npm 包）
+└── .github/workflows/           # dsh 包发布流水线（tag 触发）
+```
+
+修改技能只动 `plugins/js-reverse-plugin/skills/`；三个生态的适配壳各自独立。
+
+## 发布 dsh 包
+
+```bash
+# 1. 修改 dsh-js-reverse-plugin/package.json 的 version
+# 2. 打 tag 推送，CI 自动发布到 npm
+git tag dsh-js-reverse-plugin-v<version>
+git push origin dsh-js-reverse-plugin-v<version>
+```
+
+发布时 CI 从 `plugins/js-reverse-plugin/skills` 复制技能进包，仓库中不保留副本。
 
 ## 当前内容
 
