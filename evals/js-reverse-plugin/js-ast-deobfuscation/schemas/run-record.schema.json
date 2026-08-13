@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill versus baseline task run",
+  "type": "object",
+  "required": [
+    "run_id",
+    "comparison_group",
+    "status",
+    "date_utc",
+    "model",
+    "skill",
+    "arm",
+    "case_id",
+    "fixture_sha256",
+    "prompt_sha256",
+    "command",
+    "output_path",
+    "result"
+  ],
+  "properties": {
+    "run_id": { "type": "string", "minLength": 1 },
+    "comparison_group": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["completed", "failed", "aborted"] },
+    "date_utc": { "type": "string", "format": "date-time" },
+    "model": {
+      "type": "object",
+      "required": ["provider", "id", "parameters"],
+      "properties": {
+        "provider": { "type": "string" },
+        "id": { "type": "string" },
+        "parameters": { "type": "object" }
+      }
+    },
+    "skill": {
+      "type": "object",
+      "required": ["enabled", "path", "sha256"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "path": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "arm": { "enum": ["skill", "baseline"] },
+    "case_id": { "type": "string" },
+    "fixture_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "prompt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "command": { "type": "string", "minLength": 1 },
+    "output_path": { "type": "string", "minLength": 1 },
+    "result": {
+      "type": "object",
+      "required": ["score", "max_score", "observed", "hard_failures", "notes"],
+      "properties": {
+        "score": { "type": "number", "minimum": 0 },
+        "max_score": { "type": "number", "minimum": 1 },
+        "observed": { "type": "array", "items": { "type": "string" } },
+        "hard_failures": { "type": "array", "items": { "type": "string" } },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

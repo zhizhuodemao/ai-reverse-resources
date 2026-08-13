@@ -1,0 +1,37 @@
+{
+  "name": "js-reverse-plugin",
+  "version": "0.1.0",
+  "description": "AI-assisted JavaScript reverse engineering with AST deobfuscation, controlled iv8 execution, JSVMP semantic recovery, and browser debugging through js-reverse-mcp.",
+  "author": {
+    "name": "zhizhuodemao"
+  },
+  "keywords": [
+    "javascript",
+    "reverse-engineering",
+    "deobfuscation",
+    "iv8",
+    "jsvmp",
+    "mcp",
+    "trace"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "JS Reverse Plugin",
+    "shortDescription": "AST 解混淆、iv8 受控运行与 JSVMP 精确恢复",
+    "longDescription": "从外层 JavaScript AST 解混淆和真实生成入口定位，到 iv8 受控运行、动态取证和 JSVMP 字节码语义恢复；最终以同一原始输入下的独立实现与原程序精确等价验收。",
+    "developerName": "zhizhuodemao",
+    "category": "Developer Tools",
+    "capabilities": [
+      "JavaScript deobfuscation",
+      "Browser debugging",
+      "Controlled iv8 execution",
+      "JSVMP semantic recovery"
+    ],
+    "defaultPrompt": [
+      "分析这份混淆 JavaScript，建立可验证的宿主与 VM 边界。",
+      "用受控 iv8 跑通原始程序，并定位签名的真实生成入口。",
+      "结合静态分析和 Trace，把 JSVMP 恢复为从原始输入到最终输出的独立实现。"
+    ]
+  }
+}

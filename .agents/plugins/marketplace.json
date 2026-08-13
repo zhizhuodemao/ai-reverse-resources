@@ -1,0 +1,20 @@
+{
+  "name": "ai-reverse-resources",
+  "interface": {
+    "displayName": "AI Reverse Resources"
+  },
+  "plugins": [
+    {
+      "name": "js-reverse-plugin",
+      "source": {
+        "source": "local",
+        "path": "./plugins/js-reverse-plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

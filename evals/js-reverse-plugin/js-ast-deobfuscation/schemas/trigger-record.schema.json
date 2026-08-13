@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Description trigger trial",
+  "type": "object",
+  "required": [
+    "run_id",
+    "status",
+    "date_utc",
+    "model",
+    "skill_sha256",
+    "query_id",
+    "trial",
+    "expected_trigger",
+    "observed_trigger",
+    "command",
+    "notes"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "status": { "enum": ["completed", "failed", "aborted"] },
+    "date_utc": { "type": "string", "format": "date-time" },
+    "model": {
+      "type": "object",
+      "required": ["provider", "id", "parameters"],
+      "properties": {
+        "provider": { "type": "string" },
+        "id": { "type": "string" },
+        "parameters": { "type": "object" }
+      }
+    },
+    "skill_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "query_id": { "type": "string" },
+    "trial": { "type": "integer", "minimum": 1 },
+    "expected_trigger": { "type": "boolean" },
+    "observed_trigger": { "type": "boolean" },
+    "command": { "type": "string", "minLength": 1 },
+    "notes": { "type": "string" }
+  }
+}

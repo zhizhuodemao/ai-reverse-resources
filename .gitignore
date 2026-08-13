@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+node_modules/
+.eslintcache
+*.log
+coverage/
+dist/
+build/
+.tmp/

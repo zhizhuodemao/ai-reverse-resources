@@ -1,0 +1,3 @@
+{"event":1,"recordId":12,"frameId":3,"pcBefore":20,"opcode":7,"operands":[],"stackBefore":[2,3],"stackAfter":[5],"pcAfter":21}
+{"event":2,"recordId":12,"frameId":3,"pcBefore":27,"opcode":7,"operands":[],"stackBefore":[10,-4],"stackAfter":[6],"pcAfter":28}
+{"event":3,"recordId":91,"frameId":8,"pcBefore":4,"opcode":7,"operands":[],"stackBefore":["a","b"],"stackAfter":["ab"],"pcAfter":5}

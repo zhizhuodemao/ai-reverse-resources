@@ -1,0 +1,5 @@
+{"case_id":"fixed-baseline","fixture":"fixtures/fixed-baseline.md","prompt":"prompts/fixed-baseline.txt","rubric_id":"fixed-baseline","tags":["oracle","scope","exact-equality"],"execution_policy":"do-not-execute"}
+{"case_id":"precomputed-input","fixture":"fixtures/precomputed-input.py","prompt":"prompts/precomputed-input.txt","rubric_id":"precomputed-input","tags":["raw-input","false-positive"],"execution_policy":"do-not-execute"}
+{"case_id":"static-record-container","fixture":"fixtures/static-record-container.js","prompt":"prompts/static-record-container.txt","rubric_id":"static-record-container","tags":["static","record","no-trace"],"execution_policy":"do-not-execute"}
+{"case_id":"server-accepted","fixture":"fixtures/server-accepted.json","prompt":"prompts/server-accepted.txt","rubric_id":"server-accepted","tags":["server","equivalence"],"execution_policy":"do-not-execute"}
+{"case_id":"trace-only","fixture":"fixtures/trace-only.jsonl","prompt":"prompts/trace-only.txt","rubric_id":"trace-only","tags":["trace","handler-semantics","evidence-boundary"],"execution_policy":"do-not-execute"}

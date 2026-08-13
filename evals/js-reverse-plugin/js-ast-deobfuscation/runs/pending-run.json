@@ -1,0 +1,50 @@
+{
+  "schema_version": "1",
+  "status": "pending",
+  "created_date": "2026-07-23T15:16:23+08:00",
+  "skill": {
+    "path": "../../../plugins/js-reverse-plugin/skills/js-ast-deobfuscation/SKILL.md",
+    "sha256": "bcc9e55c085963487ed86fdcfb25391456aeea9f2021b4082b3e620e5be3e968"
+  },
+  "models": [
+    {
+      "slot": "small",
+      "provider": "<provider>",
+      "id": "<small-model-id>",
+      "parameters": {},
+      "status": "pending"
+    },
+    {
+      "slot": "medium",
+      "provider": "<provider>",
+      "id": "<medium-model-id>",
+      "parameters": {},
+      "status": "pending"
+    },
+    {
+      "slot": "large",
+      "provider": "<provider>",
+      "id": "<large-model-id>",
+      "parameters": {},
+      "status": "pending"
+    }
+  ],
+  "command_template": "<agent-runner> --model <model-id> --prompt-file <prompt-path> --fixture <fixture-path> --output <output-path>",
+  "task_eval": {
+    "cases": ["static-string", "bundler-boundary", "runtime-seeded"],
+    "arms": ["skill", "baseline"],
+    "schema": "schemas/run-record.schema.json",
+    "results": "runs/task-results.jsonl",
+    "planned_records": 18
+  },
+  "description_eval": {
+    "query_set": "trigger-queries.jsonl",
+    "query_count": 20,
+    "trials_per_query": 3,
+    "schema": "schemas/trigger-record.schema.json",
+    "results": "runs/trigger-results.jsonl",
+    "planned_records": 180
+  },
+  "results_recorded": false,
+  "notes": "计划模板。模型与命令仍是占位符；当前没有模型输出、分数或触发结果。"
+}

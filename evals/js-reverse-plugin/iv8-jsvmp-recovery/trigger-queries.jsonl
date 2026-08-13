@@ -1,0 +1,16 @@
+{"query_id":"p-train-01","split":"train","expected":true,"query":"我已经在 iv8 固定了输入和 a_bogus 输出，现在要反编译 JSVMP bytecode 并用 Python 精确复现。"}
+{"query_id":"p-train-02","split":"train","expected":true,"query":"请结合解释器源码和 Handler Trace 确定每个 opcode 的栈效应和 PC 语义。"}
+{"query_id":"p-train-03","split":"train","expected":true,"query":"这份 VMP 有一批 record，我要恢复 VM 函数、CFG 和从原始请求到 token 的数据流。"}
+{"query_id":"p-train-04","split":"train","expected":true,"query":"原 JS 在受控 iv8 中已经可重复，请审查纯算实现是否从 raw input 独立生成了同一密文。"}
+{"query_id":"p-train-05","split":"train","expected":true,"query":"没有 Trace 时能不能从字节码容器确定 record 数量，以及 record 和 VM 函数是什么关系？"}
+{"query_id":"n-train-01","split":"train","expected":false,"query":"请把这个压缩 JavaScript 用 Prettier 格式化，然后恢复外层字符串池。"}
+{"query_id":"n-train-02","split":"train","expected":false,"query":"帮我安装 iv8，补 navigator、canvas 和 webgl，让这份 JS 首先能跑起来。"}
+{"query_id":"n-train-03","split":"train","expected":false,"query":"请解释标准 RC4 的 KSA 和 PRGA 算法，不涉及混淆或 VM。"}
+{"query_id":"n-train-04","split":"train","expected":false,"query":"这是一个 webpack 数字模块表，帮我找出入口模块和依赖关系。"}
+{"query_id":"n-train-05","split":"train","expected":false,"query":"我的 Python 请求返回 403，请检查 Cookie、代理 IP 和请求头。"}
+{"query_id":"p-test-01","split":"test","expected":true,"query":"我想从签名输出反向切片 JSVMP，用固定时间和随机的 iv8 作 oracle，最后让独立实现逐字节对账。"}
+{"query_id":"p-test-02","split":"test","expected":true,"query":"这个 handler 在 trace 里只出现了两次，请结合 bytecode 和受控变体判断它的准确完整含义。"}
+{"query_id":"p-test-03","split":"test","expected":true,"query":"这个 VM 里的字符串到底是字符串池、加密常量还是 bytecode 数据，是否需要解密才能恢复最终 token？"}
+{"query_id":"p-test-04","split":"test","expected":true,"query":"服务器接受了我的签名，但本地输出和固定 iv8 不同，这能算 VMP 语义恢复完成吗？"}
+{"query_id":"n-test-01","split":"test","expected":false,"query":"只需要把一个普通 JavaScript 函数改写成等价 Python，没有字节码解释器或 Trace。"}
+{"query_id":"n-test-02","split":"test","expected":false,"query":"请用真实 Chrome 录制鼠标轨迹并自动点击页面按钮。"}

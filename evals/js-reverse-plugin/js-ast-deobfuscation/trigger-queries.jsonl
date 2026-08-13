@@ -1,0 +1,20 @@
+{"query_id":"p01","label":"positive","split":"train","query":"帮我把这段混淆 JavaScript 解混淆。","rationale":"明确解混淆请求。"}
+{"query_id":"p02","label":"positive","split":"train","query":"分析这个 JS 的字符串池和解码器，提高可读性。","rationale":"字符串恢复属于核心任务。"}
+{"query_id":"p03","label":"positive","split":"train","query":"识别这份脚本里有哪些混淆模式，然后逐步处理。","rationale":"画像加分步解混淆。"}
+{"query_id":"p04","label":"positive","split":"train","query":"恢复这个浏览器脚本里隐藏的属性名，但先别执行完整代码。","rationale":"静态优先的隐藏名称恢复。"}
+{"query_id":"p05","label":"positive","split":"train","query":"给这份压缩且混淆的 JS 建立 AST 分析视图。","rationale":"AST 解混淆分析视图。"}
+{"query_id":"p06","label":"positive","split":"train","query":"清理 JSVMP 外层 JavaScript，整理宿主 binding，VM 内部先不要反编译。","rationale":"VM 外围与宿主边界属于 Skill 范围。"}
+{"query_id":"p07","label":"positive","split":"test","query":"这个 webpack bundle 里哪些只是打包器，哪些才是真混淆？","rationale":"解混淆中的打包器误判边界。"}
+{"query_id":"p08","label":"positive","split":"test","query":"先判断这个 decoder 静态能不能还原，必须动态时再告诉我。","rationale":"静动态证据分流。"}
+{"query_id":"p09","label":"positive","split":"test","query":"把 eval 载荷的外层结构梳理清楚，产出方便后续逆向的 JS。","rationale":"动态载荷外围解混淆。"}
+{"query_id":"p10","label":"positive","split":"test","query":"我只想解混淆，不知道从字符串、代理还是控制流哪一步开始。","rationale":"用户目标明确但不知道技术路线。"}
+{"query_id":"n01","label":"negative","split":"train","query":"写一个 JavaScript 函数，把数字数组从小到大排序。","rationale":"普通编码任务。"}
+{"query_id":"n02","label":"negative","split":"train","query":"这个 React 组件为什么重复渲染？","rationale":"前端调试，不是解混淆。"}
+{"query_id":"n03","label":"negative","split":"train","query":"只用 Prettier 格式化这个 JS 文件。","rationale":"纯格式化任务。"}
+{"query_id":"n04","label":"negative","split":"train","query":"把这份 JavaScript 压缩到最小。","rationale":"代码压缩与解混淆方向相反。"}
+{"query_id":"n05","label":"negative","split":"train","query":"安装并配置 iv8，让网页脚本能够完整运行。","rationale":"系统补环境，应由运行环境能力处理。"}
+{"query_id":"n06","label":"negative","split":"train","query":"解释 webpack 数字模块 ID 的工作原理，不需要分析任何混淆代码。","rationale":"一般知识解释。"}
+{"query_id":"n07","label":"negative","split":"test","query":"反编译这段 VM 字节码并恢复每个 opcode 的语义。","rationale":"VM 内部反编译超出 AST Skill。"}
+{"query_id":"n08","label":"negative","split":"test","query":"审计 package-lock.json 是否存在供应链风险。","rationale":"依赖安全审计。"}
+{"query_id":"n09","label":"negative","split":"test","query":"把这份 TypeScript 迁移成现代 JavaScript。","rationale":"语言迁移，不是解混淆。"}
+{"query_id":"n10","label":"negative","split":"test","query":"在浏览器里监控某个请求的 Cookie 是从哪里设置的。","rationale":"浏览器网络与 Cookie 取证，不是 AST 解混淆请求。"}

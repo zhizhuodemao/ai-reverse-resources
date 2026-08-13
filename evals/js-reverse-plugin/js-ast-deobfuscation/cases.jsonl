@@ -1,0 +1,3 @@
+{"case_id":"static-string","fixture":"fixtures/static-string.js","prompt":"prompts/static-string.txt","rubric_id":"static-string","tags":["static","string-hiding"],"execution_policy":"do-not-execute"}
+{"case_id":"bundler-boundary","fixture":"fixtures/bundler-boundary.js","prompt":"prompts/bundler-boundary.txt","rubric_id":"bundler-boundary","tags":["static","bundler","misclassification"],"execution_policy":"do-not-execute"}
+{"case_id":"runtime-seeded","fixture":"fixtures/runtime-seeded.js","prompt":"prompts/runtime-seeded.txt","rubric_id":"runtime-seeded","tags":["blocked","runtime-fact"],"execution_policy":"do-not-execute"}

@@ -1,0 +1,10 @@
+{
+  "raw_input_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "oracle_output_utf8": "abc-123",
+  "recovered_output_utf8": "abc-124",
+  "server_response": {
+    "http_status": 200,
+    "code": 0,
+    "message": "accepted"
+  }
+}
