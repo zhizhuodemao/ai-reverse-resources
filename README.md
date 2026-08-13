@@ -2,7 +2,9 @@
 
 面向 AI Agent 的逆向工程插件仓库，支持 Codex 和 Claude Code。当前提供 `js-reverse-plugin`。
 
-## 安装
+## 安装全部（推荐）
+
+当前仓库只有 `js-reverse-plugin`，因此“安装全部”就是安装该插件。
 
 ### Codex CLI
 
@@ -46,6 +48,20 @@ claude plugin install js-reverse-plugin@ai-reverse-resources
 3. 从 **ai-reverse-resources** 安装 **js-reverse-plugin**。
 
 Claude Code Desktop 的插件适用于本地和 SSH 会话，不适用于 cloud 或 WSL 会话。
+
+## 自选安装
+
+添加 Marketplace 后，可以只安装需要的插件：
+
+```bash
+# Codex
+codex plugin add <plugin-name>@ai-reverse-resources
+
+# Claude Code
+claude plugin install <plugin-name>@ai-reverse-resources
+```
+
+当前可选插件：`js-reverse-plugin`。在 Codex App 或 Claude Code Desktop 中，也可以直接从插件浏览器选择安装，不会因为添加 Marketplace 而无提示安装全部插件。
 
 ## 当前内容
 
