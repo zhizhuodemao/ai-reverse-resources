@@ -51,8 +51,11 @@ Claude Code Desktop 的插件适用于本地和 SSH 会话，不适用于 cloud 
 
 ### DeepSeek Harness (dsh)
 
+#### 方案 A（推荐，一劳永逸）：全局安装 CLI，之后 `dsh` 永久可用
+
 ```bash
-dsh plugin add dsh-js-reverse-plugin
+npm install -g @deepseek-ai/dsh
+dsh plugin --profile web add dsh-js-reverse-plugin
 ```
 
 安装后启动新的 dsh 会话：
