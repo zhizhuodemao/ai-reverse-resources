@@ -27,16 +27,24 @@
 - id: persona
   name: '@deepseek-ai/dsh-persona'
   config:
-    text: >-
-      You are a JS reverse-engineering agent powered by the {{model}} model. Your working directory is {{cwd}}.
+    suffix: Your working directory is {{cwd}}.
+    prefix: >-
+      You are a JS reverse-engineering agent powered by the {{model}} model.
 
       工作准则：
-      - 证据驱动：每个结论必须可溯源——静态证据（源码、字节码、AST）或动态证据（受控执行、浏览器观测）。区分"事实"与"推断"，不无证猜测。
+
+      - 证据驱动：每个结论必须可溯源——静态证据（源码、字节码、AST）或动态证据（受控执行、浏览器观测）。区分“事实”与“推断”，不无证猜测。
+
       - 逐步决策：关键选择先说明依据与代价，等用户决定——解混淆路线、是否补环境、静态还是动态、继续还是交接。
+
       - 保护原始输入：目标文件一律只读；分析前先做格式化派生副本，一切修改只落在副本。
-      - 解混淆服务于分析：产出是方便阅读、搜索、定位、动态观测的派生视图；不以"清理干净"或还原作者原名、原始工程为目标。
+
+      - 解混淆服务于分析：产出是方便阅读、搜索、定位、动态观测的派生视图；不以“清理干净”或还原作者原名、原始工程为目标。
+
       - 受控执行：动态证据通过 iv8（C++ V8 + 浏览器环境）或 js-reverse MCP 取得；Node.js 仅作静态工程工具。
-      - 等价验收：恢复的算法、签名、映射以与原始实现精确等价为验收标准；"服务器恰好接受"不是证明。
+
+      - 等价验收：恢复的算法、签名、映射以与原始实现精确等价为验收标准；“服务器恰好接受”不是证明。
+
       - 长线任务用 todo 和 goal 跟踪；多路独立分析（静态/动态/资料）可用 subagent 并行；关键证据和推导过程记录在案，保持可审计。
 
 - id: agent-instructions
@@ -100,12 +108,12 @@
 
 # ── goals ───────────────────────────────────────────────────────────────────
 
-# Only the model-facing tool. The goal SERVICE, its session driver, and the
-# `/goal` command stay on the host plane: the Gateway serves the goal domain as
-# Remote endpoints whose receiver comes from a generated descriptor, so it
-# resolves `goals` on the host and an entry-local realm here would hide it. The
-# registry is keyed by session anyway, so one host instance serves every
-# session. What a preset chooses is whether its agent can call the goal tool.
+# The goal service and session driver stay on the host plane, where the Gateway
+# can resolve them. The human command and model-facing tool register into this
+# preset's scoped layers.
+- id: command-goal
+  name: '@deepseek-ai/dsh-command-goal'
+
 - id: tool-goal
   name: '@deepseek-ai/dsh-tool-goal'
 
@@ -177,12 +185,6 @@
 # `workflows` is different — nothing outside an agent reads it — so every row
 # that reaches it shares one entry-local realm here, and a consumer left
 # outside would resolve a host registry this preset does not populate.
-#
-# `tool-subagent-report` is host-plane for the same reason as the registry,
-# not because a preset may not want it: it registers a CONTINUABLE SETUP on
-# that singleton rather than a tool this agent calls, and the setup list is
-# not scope-aware — one copy per mounted preset means every child gets
-# `report` registered once per live session, which throws on the second.
 - id: delegation
   name: cordis:group
   group: true
@@ -200,8 +202,13 @@
       config:
         provider: spawn
         toolName: subagent
+        modelSelectionSettings: true
         backgroundMode: continuable
 
+    # Fork omits model selection so provider/model stay equal to the parent and
+    # the inherited history remains eligible for KV Cache reuse. This preset
+    # keeps fork continuable; parent and child inherit the same messaging tool,
+    # while the parent id and return guidance follow the inherited history.
     - id: tool-subagent-fork
       name: '@deepseek-ai/dsh-tool-subagent'
       config:
@@ -209,16 +216,17 @@
         toolName: subagent_fork
         backgroundMode: continuable
 
-    # Product providers are host-plane singletons. Copy this preset, then
-    # remove `disabled` from either ordinary tool row to expose that product
-    # only to agents composed from the copy.
+    # Production dsh does not install these optional providers. Install the
+    # matching Bundle in this Profile and restart the Host, then copy this
+    # preset and remove `disabled` from the matching tool row. Host availability
+    # alone grants no tool.
     - id: tool-subagent-codex
       name: '@deepseek-ai/dsh-tool-subagent'
       disabled: true
       config:
         provider: codex
         toolName: subagent_codex
-        enableRunInBackground: false
+        backgroundMode: one-shot
         maxDepth: provider-managed
 
     - id: tool-subagent-claude-code
@@ -227,19 +235,26 @@
       config:
         provider: claude-code
         toolName: subagent_claude_code
-        enableRunInBackground: false
+        backgroundMode: one-shot
         maxDepth: provider-managed
 
-    - id: workflow-worker-thread
-      name: '@deepseek-ai/dsh-workflow-worker-thread'
+    - id: workflow-ptc
+      name: '@deepseek-ai/dsh-workflow-ptc'
       config:
         provider: spawn
 
     - id: tool-workflow
       name: '@deepseek-ai/dsh-tool-workflow'
 
+    # Off by default with the base row it mirrors: the tool description
+    # restricts `ralph` to runs the human explicitly asked for, and completion
+    # is a worker self-report, not an independent evaluation. Preset files take
+    # no patches, so a session that wants it duplicates this preset under a new
+    # id and drops `disabled`; the shipped root shadows a copy that reuses this
+    # id.
     - id: tool-ralph
       name: '@deepseek-ai/dsh-tool-ralph'
+      disabled: true
       config:
         subagentProvider: spawn
         maxRounds: 64
@@ -259,5 +274,12 @@
 - id: tool-web
   name: '@deepseek-ai/dsh-tool-web'
   config:
-    fetch: false
+    fetch: true
     searchTimeoutMs: 60000
+
+- id: present
+  name: '@deepseek-ai/dsh-tool-present'
+
+- id: tool-plugin-manager
+  name: '@deepseek-ai/dsh-plugin-manager/tools'
+  disabled: true

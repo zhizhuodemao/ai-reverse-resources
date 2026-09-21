@@ -113,8 +113,8 @@ def validate_mcp() -> None:
     require(isinstance(server, dict), "js-reverse MCP server must be an object")
     require(server.get("command") == "npx", "js-reverse command must be npx")
     require(
-        server.get("args") == ["-y", "js-reverse-mcp@4.0.1"],
-        "js-reverse MCP must remain pinned to 4.0.1",
+        server.get("args") == ["-y", "js-reverse-mcp@4.0.5"],
+        "js-reverse MCP must remain pinned to 4.0.5",
     )
 
 
@@ -152,8 +152,8 @@ def validate_claude_plugin() -> None:
     require(isinstance(server, dict), "Claude js-reverse server must be an object")
     require(server.get("command") == "npx", "Claude js-reverse command must be npx")
     require(
-        server.get("args") == ["-y", "js-reverse-mcp@4.0.1"],
-        "Claude js-reverse MCP must remain pinned to 4.0.1",
+        server.get("args") == ["-y", "js-reverse-mcp@4.0.5"],
+        "Claude js-reverse MCP must remain pinned to 4.0.5",
     )
 
 
@@ -213,7 +213,7 @@ def main() -> None:
     validate_evals()
     print(
         "OK: Codex and Claude marketplaces, js-reverse-plugin, 3 skills, "
-        "js-reverse-mcp@4.0.1, and 2 eval suites"
+        "js-reverse-mcp@4.0.5, and 2 eval suites"
     )
 
 

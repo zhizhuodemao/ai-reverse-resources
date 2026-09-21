@@ -62,8 +62,21 @@ dsh plugin --profile web add dsh-js-reverse-plugin
 
 - 三个技能出现在对话输入框 `/` 命令面板：`js-ast-deobfuscation`、`iv8-env-runtime`、`iv8-jsvmp-recovery`
 - MCP 工具注册为 `mcp__js-reverse__*`（如 `mcp__js-reverse__navigate_page`）
+- 「逆向模式」出现在 **设置 → Agent 预设 → 自定义**
 
 DeepSeek Harness 没有插件市场；插件发布在 npm：[dsh-js-reverse-plugin](https://www.npmjs.com/package/dsh-js-reverse-plugin)。
+
+#### 升级：必须手动删除旧的 agent preset
+
+安装时插件会把「逆向模式」preset 写入 `~/.dsh/.agent-presets/reverse/`，**已存在的文件一律不覆盖**，以保护用户对 preset 的本地改动。代价是升级插件拿不到新版 preset：dsh 的 agent preset 会引用具体的 harness 插件包名和 config 字段，而这些随 dsh 版本演进，旧 preset 迟早引用到已改名或已改字段的插件，届时预设卡片显示红色「加载失败」且不可选。
+
+因此升级插件后，如果没有改过该 preset，删掉目录再重启，让新版重新写入：
+
+```bash
+rm -rf ~/.dsh/.agent-presets/reverse
+```
+
+改过的话，先备份再删除，重启后把自己的改动重新应用到新版之上。技能和 MCP 工具不受影响，正常随插件升级。
 
 ## 自选安装
 
@@ -98,7 +111,7 @@ claude plugin install <plugin-name>@ai-reverse-resources
 
 ## 当前内容
 
-`js-reverse-plugin`：JavaScript AST 解混淆、受控 iv8 运行、JSVMP 恢复，以及 `js-reverse-mcp@4.0.1` 浏览器动态取证。
+`js-reverse-plugin`：JavaScript AST 解混淆、受控 iv8 运行、JSVMP 恢复，以及 `js-reverse-mcp@4.0.5` 浏览器动态取证。
 
 ## 本地校验
 
