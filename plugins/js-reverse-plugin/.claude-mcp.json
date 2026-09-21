@@ -4,7 +4,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "js-reverse-mcp@4.0.1"
+        "js-reverse-mcp@4.0.5"
       ]
     }
   }

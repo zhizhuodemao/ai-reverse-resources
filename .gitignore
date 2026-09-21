@@ -13,3 +13,5 @@ pnpm-lock.yaml
 article.md
 article-outline.md
 article-images.md
+.idea/
+.serena/
