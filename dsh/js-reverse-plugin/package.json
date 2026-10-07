@@ -1,9 +1,12 @@
 {
   "name": "dsh-js-reverse-plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "JavaScript reverse-engineering bundle for DeepSeek Harness: AST deobfuscation / iv8 / JSVMP skills, the js-reverse-mcp server tools, and the reverse agent preset.",
   "type": "module",
   "main": "index.js",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
   "files": [
     "index.js",
     "cordis.patch.yml",
@@ -15,7 +18,7 @@
   },
   "dsh": {
     "bundle": {
-      "patch": "./cordis.patch.yml"
+      "patch": ["./cordis.patch.yml", "./preset/cordis.patch.yml"]
     }
   }
 }
