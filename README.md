@@ -60,10 +60,13 @@ dsh plugin --profile web add dsh-js-reverse-plugin
 
 安装后启动新的 dsh 会话：
 
+- 在 Agent 模式选择器中选择 **逆向模式**。
 - 三个技能出现在对话输入框 `/` 命令面板：`js-ast-deobfuscation`、`iv8-env-runtime`、`iv8-jsvmp-recovery`
 - MCP 工具注册为 `mcp__js-reverse__*`（如 `mcp__js-reverse__navigate_page`）
 
 DeepSeek Harness 没有插件市场；插件发布在 npm：[dsh-js-reverse-plugin](https://www.npmjs.com/package/dsh-js-reverse-plugin)。
+
+DSH 适配采用 `0.2.0-rc.2` 的声明式 Agent preset API。模式随 bundle 加载和卸载，不再向 `$DSH_HOME/.agent-presets/` 写文件。旧版 `0.2.0` 包写入的 `reverse` 目录不会被覆盖或删除，但当前 DSH 不会读取它；自定义过旧预设的用户需要将改动迁移到 `preset-reverse` 配置条目。升级包后重启 DSH，再新建会话选择模式。
 
 ## 自选安装
 

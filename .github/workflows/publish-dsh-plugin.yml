@@ -44,6 +44,11 @@ jobs:
         working-directory: dsh/${{ matrix.package }}
         run: npm install
 
+      - name: Test dsh bundle
+        if: steps.select.outputs.match == 'true'
+        working-directory: dsh/${{ matrix.package }}
+        run: npm test --if-present
+
       - name: Verify package contents
         if: steps.select.outputs.match == 'true'
         working-directory: dsh/${{ matrix.package }}

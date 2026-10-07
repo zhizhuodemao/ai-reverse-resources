@@ -1,12 +1,9 @@
 // dsh-js-reverse-plugin — one DeepSeek Harness bundle that mounts the
 // js-reverse skills (AST deobfuscation / iv8 / JSVMP) as runtime skills.
-// The js-reverse-mcp server is mounted by the cordis.patch.yml layer, and the
-// bundled `preset/` directory is installed into the harness home as the
-// `reverse` agent preset, so a single `dsh plugin add` installs skills + MCP
-// tools + the reverse agent mode together.
-import { copyFileSync, mkdirSync, readdirSync, readFileSync, statSync } from 'node:fs'
-import { homedir } from 'node:os'
-import { dirname, join } from 'node:path'
+// The bundle patches mount js-reverse-mcp and declare the `reverse` agent
+// preset. DSH 0.2.0-rc.2 discovers presets from declarations, not directories.
+import { readdirSync, readFileSync, statSync } from 'node:fs'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parse } from 'yaml'
 
@@ -16,33 +13,6 @@ export const name = 'js-reverse-plugin'
 export const inject = ['skills']
 
 const SKILLS_DIR = fileURLToPath(new URL('./skills/', import.meta.url))
-const PRESET_DIR = fileURLToPath(new URL('./preset/', import.meta.url))
-
-/** Preset id the bundled composition installs under. */
-export const PRESET_ID = 'reverse'
-
-/**
- * The user agent-presets root. Honors DSH_HOME; falls back to `~/.dsh`.
- * @returns the `.agent-presets` directory under the harness home.
- */
-export function presetUserRoot() {
-  return join(process.env.DSH_HOME ?? join(homedir(), '.dsh'), '.agent-presets')
-}
-
-/**
- * Install the bundled preset into the user preset root. Idempotent: an
- * existing composition file is never overwritten, so a user's edits survive
- * reinstalls. Discovered immediately by `dsh-agent-presets` (unmemoized roots).
- * @param destDir - the target `<name>` preset directory, derived from {@link PRESET_ID}.
- */
-export function installPreset(destDir) {
-  mkdirSync(destDir, { recursive: true })
-  for (const file of readdirSync(PRESET_DIR)) {
-    const dest = join(destDir, file)
-    if (statSync(dest, { throwIfNoEntry: false })?.isFile()) continue
-    copyFileSync(join(PRESET_DIR, file), dest)
-  }
-}
 
 /**
  * Split one SKILL.md into its YAML frontmatter and the markdown body.
@@ -83,17 +53,9 @@ export function collectSkills() {
   return registrations
 }
 
-/** Register every bundled skill and install the bundled preset. */
+/** Register skills with disposers so unloading or reloading remains reversible. */
 export function apply(ctx) {
   for (const skill of collectSkills()) {
-    ctx.skills.register(skill)
-  }
-  try {
-    installPreset(join(presetUserRoot(), PRESET_ID))
-  } catch (error) {
-    // Preset installation is additive and idempotent; skills and MCP remain
-    // usable when the user preset root is not writable, so this fails soft
-    // with a diagnostic instead of taking the whole bundle down.
-    ctx.logger.warn(`[${name}] could not install the "${PRESET_ID}" agent preset: ${String(error)}`)
+    ctx.effect(() => ctx.skills.register(skill))
   }
 }
