@@ -184,6 +184,18 @@ def validate_skills() -> None:
         validate_skill(skills_root / name)
 
 
+def validate_dsh_package() -> None:
+    package_root = ROOT / "dsh" / PLUGIN_NAME
+    manifest = load_json(package_root / "package.json")
+    require(manifest.get("name") == "dsh-js-reverse-plugin", "wrong DSH package name")
+    patches = manifest.get("dsh", {}).get("bundle", {}).get("patch")
+    require(isinstance(patches, list) and bool(patches), "DSH bundle must declare its patch layers")
+    for patch in patches:
+        require(isinstance(patch, str) and (package_root / patch).is_file(), f"missing DSH patch: {patch}")
+    require("./preset/reverse.patch.yml" in patches, "missing declarative reverse preset")
+    require(bool(manifest.get("engines", {}).get("dsh")), "missing DSH compatibility range")
+
+
 def validate_evals() -> None:
     eval_root = ROOT / "evals" / PLUGIN_NAME
     expected = {"js-ast-deobfuscation", "iv8-jsvmp-recovery"}
@@ -210,6 +222,7 @@ def main() -> None:
     validate_mcp()
     validate_claude_plugin()
     validate_skills()
+    validate_dsh_package()
     validate_evals()
     print(
         "OK: Codex and Claude marketplaces, js-reverse-plugin, 3 skills, "

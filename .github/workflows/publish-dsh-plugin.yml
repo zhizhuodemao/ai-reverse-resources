@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org
 
       - name: Match tag to package
@@ -48,6 +48,11 @@ jobs:
         if: steps.select.outputs.match == 'true'
         working-directory: dsh/${{ matrix.package }}
         run: npm pack --dry-run
+
+      - name: Test DSH bundle
+        if: steps.select.outputs.match == 'true'
+        working-directory: dsh/${{ matrix.package }}
+        run: npm test
 
       - name: Publish to npm
         if: steps.select.outputs.match == 'true'

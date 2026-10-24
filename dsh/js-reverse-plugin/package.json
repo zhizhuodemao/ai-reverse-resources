@@ -15,7 +15,17 @@
   },
   "dsh": {
     "bundle": {
-      "patch": "./cordis.patch.yml"
+      "patch": [
+        "./cordis.patch.yml",
+        "./preset/reverse.patch.yml"
+      ]
     }
+  },
+  "engines": {
+    "node": ">=24.9.0",
+    "dsh": "^0.2.1-rc.3"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
   }
 }

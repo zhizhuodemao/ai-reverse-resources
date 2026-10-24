@@ -60,8 +60,11 @@ dsh plugin --profile web add dsh-js-reverse-plugin
 
 安装后启动新的 dsh 会话：
 
+- 在 Agent 预设中选择 **逆向模式**（`reverse`）。
 - 三个技能出现在对话输入框 `/` 命令面板：`js-ast-deobfuscation`、`iv8-env-runtime`、`iv8-jsvmp-recovery`
 - MCP 工具注册为 `mcp__js-reverse__*`（如 `mcp__js-reverse__navigate_page`）
+
+需要 Node.js 24.9 或更新版本，以及 DSH `^0.2.1-rc.3`。插件通过 bundle 补丁声明 `reverse` 预设，不再向 `$DSH_HOME/.agent-presets` 复制配置。旧版本留下的该目录不会被删除；其中的自定义内容需手动迁移到当前 profile 的 `cordis.patch.yml`，不会自动导入新预设。技能与 MCP 仍挂载在 profile 层，本次兼容修复不改变它们的可见范围。
 
 DeepSeek Harness 没有插件市场；插件发布在 npm：[dsh-js-reverse-plugin](https://www.npmjs.com/package/dsh-js-reverse-plugin)。
 
@@ -105,6 +108,15 @@ claude plugin install <plugin-name>@ai-reverse-resources
 ```bash
 python3 scripts/validate_repository.py
 claude plugin validate .
+```
+
+DSH bundle 的配置和技能注册回归检查：
+
+```bash
+cd dsh/js-reverse-plugin
+npm install
+ln -s ../../plugins/js-reverse-plugin/skills skills # 已有 skills 目录或链接时跳过
+npm test
 ```
 
 安装说明依据 [Codex Plugins](https://learn.chatgpt.com/docs/plugins) 和 [Claude Code Plugins](https://code.claude.com/docs/en/discover-plugins)。
