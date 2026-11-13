@@ -51,7 +51,7 @@ Claude Code Desktop 的插件适用于本地和 SSH 会话，不适用于 cloud 
 
 ### DeepSeek Harness (dsh)
 
-DSH 侧是一个「逆向」总包，按领域提供模式（Agent 预设）：当前有 **JS 逆向模式**，安卓 / iOS 模式随后加入。
+DSH 侧是一个「逆向模式」预设：技能按领域分组装在这个模式里，模型先判定目标类型（Web/JS、安卓、iOS），再自己加载对应领域的技能。当前已填充 JS 逆向，安卓 / iOS 待补。
 
 #### 方案 A（推荐）：从插件市场安装
 
@@ -75,12 +75,12 @@ dsh plugin --profile web add dsh-reverse-plugin
 
 DSH Desktop 用户请走方案 A，或在应用的 **插件** 页按包名 `dsh-reverse-plugin` 安装：`--profile web` 装进的是 CLI / `dsh web` 的 profile，桌面端不读它。
 
-装完后启动新的 dsh 会话，在 Agent 预设中选择 **JS 逆向模式**（`js-reverse`）：
+装完后启动新的 dsh 会话，在 Agent 预设中选择 **逆向模式**（`reverse`）：
 
 - 三个技能出现在对话输入框 `/` 命令面板：`js-ast-deobfuscation`、`iv8-env-runtime`、`iv8-jsvmp-recovery`
 - MCP 工具注册为 `mcp__js-reverse__*`（如 `mcp__js-reverse__navigate_page`）
 
-技能与 MCP 挂在该模式内部，只有选了 JS 逆向模式的会话能看到它们；标准会话不会出现这些条目。
+技能与 MCP 挂在该模式内部，只有选了逆向模式的会话能看到它们；标准会话不会出现这些条目。
 
 需要 Node.js 24.9 或更新版本，以及 DSH `^0.2.1-rc.3`。
 
@@ -112,20 +112,21 @@ claude plugin install <plugin-name>@ai-reverse-resources
 ├── dsh/
 │   └── reverse-plugin/          # DSH 总包 dsh-reverse-plugin
 │       ├── index.js             # 技能注册器，按 config.dir 注册某个模式
-│       ├── preset/              # 每个模式一个预设文件
-│       │   └── js-reverse.patch.yml
+│       ├── preset/              # 预设文件（逆向模式，技能按领域分组）
+│       │   └── reverse.patch.yml
 │       └── tests/
 ├── evals/                       # 技能评测
 ├── scripts/                     # 仓库校验
 └── .github/workflows/           # dsh 包发布流水线（tag 触发）
 ```
 
-修改技能只动 `plugins/<name>/skills/`；三个生态的适配壳各自独立。新增逆向模式时：在 `plugins/` 加该模式的技能插件，在 `dsh/reverse-plugin/preset/` 加一个预设文件，并在发布流水线的技能复制步骤里加一行。
+修改技能只动 `plugins/<name>/skills/`；三个生态的适配壳各自独立。新增逆向领域时：在 `plugins/` 加该领域的技能插件，在 `dsh/reverse-plugin/preset/reverse.patch.yml` 里追加一行技能注册，并在发布流水线的技能复制步骤里加一行。
 
 ## 当前内容
 
-- **JS 逆向模式**（DSH 预设 `js-reverse`，技能包 `js-reverse-plugin`）：JavaScript AST 解混淆、受控 iv8 运行、JSVMP 恢复，以及 `js-reverse-mcp@4.0.1` 浏览器动态取证。
-- 安卓逆向、iOS 逆向：规划中。
+- **逆向模式**（DSH 预设 `reverse`）：模型按目标类型选择领域技能。
+  - JS 逆向（已填充，技能包 `js-reverse-plugin`）：JavaScript AST 解混淆、受控 iv8 运行、JSVMP 恢复，以及 `js-reverse-mcp@4.0.1` 浏览器动态取证。
+  - 安卓逆向、iOS 逆向：待填充。
 
 ## 本地校验
 

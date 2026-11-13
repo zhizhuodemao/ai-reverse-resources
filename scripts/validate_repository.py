@@ -37,13 +37,13 @@ PLUGINS = [
 DSH_PACKAGE = {
     "dir": "reverse-plugin",
     "name": "dsh-reverse-plugin",
-    "pkg_version": "0.3.0",
-    "patches": ["./preset/js-reverse.patch.yml"],
+    "pkg_version": "0.3.1",
+    "patches": ["./preset/reverse.patch.yml"],
     "modes": [
         {
             "dir": "skills/js",
-            "preset_id": "js-reverse",
-            "preset_name": "JS 逆向模式",
+            "preset_id": "reverse",
+            "preset_name": "逆向模式",
             "skills_from": "js-reverse-plugin",
         },
     ],

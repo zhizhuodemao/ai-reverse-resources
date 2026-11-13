@@ -17,16 +17,16 @@ git push origin dsh-reverse-plugin-v<version>
 
 `dsh-reverse-plugin` 是「逆向」总包：一个 npm 包，按领域提供多个模式预设。发布时 CI 把各模式的技能从 `plugins/<mode>-reverse-plugin/skills` 复制成包内 `skills/<mode>`。tag 规则：`dsh-<package>-v<version>`，只触发 matrix 中对应的包。
 
-## 新增逆向模式
+## 新增逆向领域
 
-模式 = DSH agent preset。新增一个模式要同步四处：
+逆向模式是一个预设，技能按领域分组挂在里面，由模型自己路由。新增一个领域要同步四处：
 
 1. `plugins/<mode>-reverse-plugin/`：技能 + Codex/Claude 清单（技能唯一来源）
-2. `dsh/reverse-plugin/preset/<mode>-reverse.patch.yml`：预设文件；技能行的 `config.dir` 指向 `skills/<mode>`
+2. `dsh/reverse-plugin/preset/reverse.patch.yml`：在预设里追加一行技能注册，`config.dir` 指向 `skills/<mode>`
 3. `.github/workflows/publish-dsh-plugin.yml` 的「Sync skills」加一行复制
 4. `scripts/validate_repository.py` 的 `PLUGINS` 和 `DSH_PACKAGE["modes"]` 各加一条
 
-技能注册行必须写在预设内部（`config.plugins`），不能放到 profile 层——只有预设内部注册才是 scoped 的，否则所有会话都会看到该模式的技能。
+技能注册行必须写在预设内部（`config.plugins`），不能放到 profile 层——只有预设内部注册才是 scoped 的，否则所有会话都会看到逆向技能。
 
 本地开发时 `dsh/reverse-plugin/skills/<mode>` 软链指向 `plugins/<mode>-reverse-plugin/skills`（不提交，见 `.gitignore`）。
 

@@ -1,6 +1,6 @@
 {
   "name": "dsh-reverse-plugin",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Reverse-engineering toolkit for DeepSeek Harness: one mode preset per reverse domain, over bundled skills, MCP servers and analysis rules. Ships the JS reverse mode; more modes follow.",
   "keywords": [
     "dsh",
@@ -33,7 +33,7 @@
   "dsh": {
     "bundle": {
       "patch": [
-        "./preset/js-reverse.patch.yml"
+        "./preset/reverse.patch.yml"
       ]
     }
   },

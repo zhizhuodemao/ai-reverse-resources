@@ -13,18 +13,18 @@ const patches = manifest.dsh.bundle.patch.flatMap(path => parse(
   { customTags: [{ tag: 'tag:yaml.org,2002:js', resolve: expression => ({ expression }) }] },
 ))
 const declarations = patches.flatMap(patch => patch.insert ?? [])
-const preset = declarations.find(row => row.id === 'preset-js-reverse')
+const preset = declarations.find(row => row.id === 'preset-reverse')
 const presetRows = preset.config.plugins
 
-test('the bundle contributes only the JS mode preset, never profile-wide rows', () => {
-  assert.deepEqual(declarations.map(row => row.id), ['preset-js-reverse'])
+test('the bundle contributes only the reverse preset, never profile-wide rows', () => {
+  assert.deepEqual(declarations.map(row => row.id), ['preset-reverse'])
   assert.equal(preset.name, '@deepseek-ai/dsh-agent-preset')
-  assert.equal(preset.config.id, 'js-reverse')
-  assert.equal(preset.config.name, 'JS 逆向模式')
+  assert.equal(preset.config.id, 'reverse')
+  assert.equal(preset.config.name, '逆向模式')
 })
 
-test('the JS mode owns its skills and its MCP server', () => {
-  const skills = presetRows.find(row => row.id === 'js-reverse-skills')
+test('the reverse mode owns its skills and its MCP server', () => {
+  const skills = presetRows.find(row => row.id === 'reverse-skills-js')
   assert.equal(skills.name, 'dsh-reverse-plugin')
   assert.equal(skills.config.dir, 'skills/js')
 
@@ -34,10 +34,11 @@ test('the JS mode owns its skills and its MCP server', () => {
   assert.deepEqual(mcp.config.args, ['-y', 'js-reverse-mcp@4.0.1'])
 })
 
-test('the JS mode keeps its original analysis rules', () => {
+test('the reverse mode routes by target type and keeps the analysis rules', () => {
   const persona = presetRows.find(row => row.id === 'persona')
   assert.equal(persona.config.text, undefined)
-  assert.match(persona.config.prefix, /JS reverse-engineering agent/)
+  assert.match(persona.config.prefix, /reverse-engineering agent/)
+  assert.match(persona.config.prefix, /先判定目标类型/)
   assert.match(persona.config.prefix, /证据驱动/)
   assert.match(persona.config.prefix, /等价验收/)
   assert.doesNotMatch(persona.config.prefix, /\{\{cwd\}\}/)
