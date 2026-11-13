@@ -8,7 +8,7 @@ coverage/
 dist/
 build/
 .tmp/
-dsh/js-reverse-plugin/skills
+dsh/reverse-plugin/skills/
 pnpm-lock.yaml
 article.md
 article-outline.md

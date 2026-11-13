@@ -1,31 +1,31 @@
 {
-  "name": "dsh-js-reverse-plugin",
-  "version": "0.2.2",
-  "description": "JavaScript reverse-engineering bundle for DeepSeek Harness: AST deobfuscation / iv8 / JSVMP skills, the js-reverse-mcp server tools, and the reverse agent preset.",
+  "name": "dsh-reverse-plugin",
+  "version": "0.3.0",
+  "description": "Reverse-engineering toolkit for DeepSeek Harness: one mode preset per reverse domain, over bundled skills, MCP servers and analysis rules. Ships the JS reverse mode; more modes follow.",
   "keywords": [
     "dsh",
     "dsh-plugin",
     "deepseek-harness",
     "cordis",
     "reverse-engineering",
+    "agent-preset",
     "deobfuscation",
     "jsvmp",
     "iv8",
     "mcp"
   ],
-  "homepage": "https://github.com/zhizhuodemao/ai-reverse-resources/tree/main/dsh/js-reverse-plugin#readme",
+  "homepage": "https://github.com/zhizhuodemao/ai-reverse-resources/tree/main/dsh/reverse-plugin#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zhizhuodemao/ai-reverse-resources.git",
-    "directory": "dsh/js-reverse-plugin"
+    "directory": "dsh/reverse-plugin"
   },
   "type": "module",
   "main": "index.js",
   "files": [
     "index.js",
-    "cordis.patch.yml",
-    "skills",
-    "preset"
+    "preset",
+    "skills"
   ],
   "dependencies": {
     "yaml": "^2.4.0"
@@ -33,8 +33,7 @@
   "dsh": {
     "bundle": {
       "patch": [
-        "./cordis.patch.yml",
-        "./preset/reverse.patch.yml"
+        "./preset/js-reverse.patch.yml"
       ]
     }
   },

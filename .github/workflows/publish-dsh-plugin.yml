@@ -13,8 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # One row per plugin. Add a row for each new dsh/<package> bundle.
-          - package: js-reverse-plugin
+          # One row per package under dsh/. The tag is dsh-<package>-v<version>.
+          - package: reverse-plugin
     permissions:
       contents: read
     steps:
@@ -37,7 +37,10 @@ jobs:
       - name: Sync skills from single source
         if: steps.select.outputs.match == 'true'
         working-directory: dsh/${{ matrix.package }}
-        run: cp -R ../../plugins/${{ matrix.package }}/skills ./skills
+        # Each mode preset registers its own subdirectory. Add one line per mode.
+        run: |
+          mkdir -p skills
+          cp -R ../../plugins/js-reverse-plugin/skills skills/js
 
       - name: Install dependencies
         if: steps.select.outputs.match == 'true'

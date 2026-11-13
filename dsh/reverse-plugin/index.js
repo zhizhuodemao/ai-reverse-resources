@@ -1,16 +1,28 @@
-// Bundled reverse-engineering skills. The bundle patches register the
-// reverse agent preset and the js-reverse MCP server declaratively.
+// Reverse-engineering toolkit bundle. Each mode preset mounts this module with
+// its own skills directory, so a preset exposes that domain's skills alone.
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parse } from 'yaml'
 
-export const name = 'js-reverse-plugin'
+export const name = 'reverse-skills'
 
 /** This bundle contributes skills, so it needs the skill registry. */
 export const inject = ['skills']
 
-const SKILLS_DIR = fileURLToPath(new URL('./skills/', import.meta.url))
+const PACKAGE_ROOT = fileURLToPath(new URL('.', import.meta.url))
+
+/** Package-relative skills directory used when a preset mounts without `dir`. */
+const DEFAULT_DIR = 'skills'
+
+/**
+ * Resolve one mount's skills directory.
+ * @param dir - package-relative directory whose child directories each hold a SKILL.md.
+ * @returns absolute path to that skills directory.
+ */
+export function skillsRoot(dir = DEFAULT_DIR) {
+  return join(PACKAGE_ROOT, dir)
+}
 
 /**
  * Split one SKILL.md into its YAML frontmatter and the markdown body.
@@ -24,14 +36,16 @@ export function splitFrontmatter(raw) {
 }
 
 /**
- * Collect the runtime skill registrations from the bundled skills directory.
+ * Collect the runtime skill registrations of one mode's bundled skills.
+ * @param dir - package-relative directory holding `<skill>/SKILL.md` entries.
  * @returns one registration per `<name>/SKILL.md` directory.
  */
-export function collectSkills() {
+export function collectSkills(dir = DEFAULT_DIR) {
+  const root = skillsRoot(dir)
   const registrations = []
-  for (const entry of readdirSync(SKILLS_DIR, { withFileTypes: true })) {
+  for (const entry of readdirSync(root, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue
-    const skillPath = join(SKILLS_DIR, entry.name, 'SKILL.md')
+    const skillPath = join(root, entry.name, 'SKILL.md')
     if (!statSync(skillPath, { throwIfNoEntry: false })?.isFile()) continue
     const { data, content } = splitFrontmatter(readFileSync(skillPath, 'utf8'))
     if (typeof data.name !== 'string' || typeof data.description !== 'string') continue
@@ -42,7 +56,7 @@ export function collectSkills() {
       content,
       path: skillPath,
       source: 'custom',
-      resourceBase: { kind: 'directory', path: join(SKILLS_DIR, entry.name) },
+      resourceBase: { kind: 'directory', path: join(root, entry.name) },
       metadata: Object.fromEntries(
         Object.entries(data).filter(([key]) => !['name', 'description', 'whenToUse'].includes(key)),
       ),
@@ -51,9 +65,14 @@ export function collectSkills() {
   return registrations
 }
 
-/** Register bundled skills; Cordis owns and reverses each registration. */
-export function apply(ctx) {
-  for (const skill of collectSkills()) {
+/**
+ * Register one mode's bundled skills; Cordis owns and reverses each registration.
+ * @param ctx - plugin context carrying the preset's standing scope.
+ * @param config - mount config; `dir` selects the package-relative skills directory.
+ */
+export function apply(ctx, config = {}) {
+  const dir = typeof config.dir === 'string' && config.dir !== '' ? config.dir : DEFAULT_DIR
+  for (const skill of collectSkills(dir)) {
     ctx.skills.register(skill)
   }
 }
