@@ -9,19 +9,26 @@
 ## 发布 dsh 包
 
 ```bash
-# 1. 修改 dsh/js-reverse-plugin/package.json 的 version
+# 1. 修改 dsh/reverse-plugin/package.json 的 version
 # 2. 打 tag 推送，CI 自动发布到 npm
-git tag dsh-js-reverse-plugin-v<version>
-git push origin dsh-js-reverse-plugin-v<version>
+git tag dsh-reverse-plugin-v<version>
+git push origin dsh-reverse-plugin-v<version>
 ```
 
-发布时 CI 从 `plugins/js-reverse-plugin/skills` 复制技能进包。tag 规则：`dsh-<package>-v<version>`，只触发 matrix 中对应的包。
+`dsh-reverse-plugin` 是「逆向」总包：一个 npm 包，按领域提供多个模式预设。发布时 CI 把各模式的技能从 `plugins/<mode>-reverse-plugin/skills` 复制成包内 `skills/<mode>`。tag 规则：`dsh-<package>-v<version>`，只触发 matrix 中对应的包。
 
-## 新增插件的 dsh 适配
+## 新增逆向模式
 
-1. 在 `dsh/` 下建与插件同名的目录（独立 npm 包，包名 `dsh-<plugin-name>`）
-2. 本地开发时 `skills` 软链指向 `../../plugins/<plugin-name>/skills`（不提交，见 `.gitignore`）
-3. 在 `.github/workflows/publish-dsh-plugin.yml` 的 matrix 加一行 `- package: <name>`
+模式 = DSH agent preset。新增一个模式要同步四处：
+
+1. `plugins/<mode>-reverse-plugin/`：技能 + Codex/Claude 清单（技能唯一来源）
+2. `dsh/reverse-plugin/preset/<mode>-reverse.patch.yml`：预设文件；技能行的 `config.dir` 指向 `skills/<mode>`
+3. `.github/workflows/publish-dsh-plugin.yml` 的「Sync skills」加一行复制
+4. `scripts/validate_repository.py` 的 `PLUGINS` 和 `DSH_PACKAGE["modes"]` 各加一条
+
+技能注册行必须写在预设内部（`config.plugins`），不能放到 profile 层——只有预设内部注册才是 scoped 的，否则所有会话都会看到该模式的技能。
+
+本地开发时 `dsh/reverse-plugin/skills/<mode>` 软链指向 `plugins/<mode>-reverse-plugin/skills`（不提交，见 `.gitignore`）。
 
 ## 本地校验
 
@@ -34,8 +41,9 @@ claude plugin validate .
 
 ```text
 .
-├── plugins/<name>/             # 插件本体（skills + 各生态清单）
-├── .claude-plugin/             # Claude Code marketplace 清单
-├── dsh/<name>/                 # DeepSeek Harness bundle（独立 npm 包）
-└── .github/workflows/          # dsh 包发布流水线（tag 触发，matrix 每包一行）
+├── plugins/<name>/              # 生态插件：skills + 各生态清单
+├── .claude-plugin/              # Claude Code marketplace 清单
+├── dsh/reverse-plugin/          # DSH 总包（独立 npm 包，模式预设 + 技能注册器）
+├── evals/<name>/                # 技能评测
+└── .github/workflows/           # dsh 包发布流水线（tag 触发，matrix 每包一行）
 ```
