@@ -51,14 +51,29 @@ Claude Code Desktop 的插件适用于本地和 SSH 会话，不适用于 cloud 
 
 ### DeepSeek Harness (dsh)
 
-#### 方案 A（推荐，一劳永逸）：全局安装 CLI，之后 `dsh` 永久可用
+#### 方案 A（推荐）：从插件市场安装
+
+1. 打开 **Plugins → Discover**（看不到这个标签页时，先在「实验性插件」里打开「自定义插件市场」）。
+2. 添加索引源；已经加过就跳过这一步：
+
+   ```text
+   https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json
+   ```
+
+3. 搜索 `js-reverse` 并安装。
+
+收录条目见 [awesome-dsh-plugin #14987](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/14987)；合并前市场里还搜不到，先用方案 B。
+
+#### 方案 B：命令行安装
 
 ```bash
 npm install -g @deepseek-ai/dsh
 dsh plugin --profile web add dsh-js-reverse-plugin
 ```
 
-安装后启动新的 dsh 会话：
+DSH Desktop 用户请走方案 A，或在应用的 **插件** 页按包名 `dsh-js-reverse-plugin` 安装：`--profile web` 装进的是 CLI / `dsh web` 的 profile，桌面端不读它。
+
+两种方案装完后都启动新的 dsh 会话：
 
 - 在 Agent 预设中选择 **逆向模式**（`reverse`）。
 - 三个技能出现在对话输入框 `/` 命令面板：`js-ast-deobfuscation`、`iv8-env-runtime`、`iv8-jsvmp-recovery`
@@ -66,7 +81,7 @@ dsh plugin --profile web add dsh-js-reverse-plugin
 
 需要 Node.js 24.9 或更新版本，以及 DSH `^0.2.1-rc.3`。插件通过 bundle 补丁声明 `reverse` 预设，不再向 `$DSH_HOME/.agent-presets` 复制配置。旧版本留下的该目录不会被删除；其中的自定义内容需手动迁移到当前 profile 的 `cordis.patch.yml`，不会自动导入新预设。技能与 MCP 仍挂载在 profile 层，本次兼容修复不改变它们的可见范围。
 
-DeepSeek Harness 没有插件市场；插件发布在 npm：[dsh-js-reverse-plugin](https://www.npmjs.com/package/dsh-js-reverse-plugin)。
+插件同时发布在 npm：[dsh-js-reverse-plugin](https://www.npmjs.com/package/dsh-js-reverse-plugin)。
 
 ## 自选安装
 
