@@ -31,13 +31,20 @@ PLUGINS = [
         "evals": {"js-ast-deobfuscation", "iv8-jsvmp-recovery"},
         "mcp_servers": {"js-reverse": {"command": "npx", "args": ["-y", "js-reverse-mcp@4.0.1"]}},
     },
+    {
+        "name": "ios-reverse-plugin",
+        "version": "0.1.0",
+        "skills": {"ios-device-bridge"},
+        "evals": set(),
+        "mcp_servers": {},
+    },
 ]
 
 # The DSH bundle: one npm package carrying every reverse mode preset.
 DSH_PACKAGE = {
     "dir": "reverse-plugin",
     "name": "dsh-reverse-plugin",
-    "pkg_version": "0.3.1",
+    "pkg_version": "0.3.2",
     "patches": ["./preset/reverse.patch.yml"],
     "modes": [
         {
@@ -45,6 +52,12 @@ DSH_PACKAGE = {
             "preset_id": "reverse",
             "preset_name": "逆向模式",
             "skills_from": "js-reverse-plugin",
+        },
+        {
+            "dir": "skills/ios",
+            "preset_id": "reverse",
+            "preset_name": "逆向模式",
+            "skills_from": "ios-reverse-plugin",
         },
     ],
 }
@@ -233,6 +246,8 @@ def validate_evals(plugin: dict) -> None:
     name = plugin["name"]
     eval_root = ROOT / "evals" / name
     expected = plugin["evals"]
+    if not expected and not eval_root.exists():
+        return
     actual = {path.name for path in eval_root.iterdir() if path.is_dir()}
     require(actual == expected, f"{name}: unexpected eval set: {sorted(actual)}")
 

@@ -1,0 +1,35 @@
+{
+  "name": "ios-reverse-plugin",
+  "version": "0.1.0",
+  "description": "Cross-platform iOS physical device bridge via pymobiledevice3, iproxy, and devicectl for device inspection, file pulling, logs, and port forwarding.",
+  "author": {
+    "name": "zhizhuodemao"
+  },
+  "keywords": [
+    "ios",
+    "reverse-engineering",
+    "pymobiledevice3",
+    "iproxy",
+    "device-bridge"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "iOS Reverse Plugin",
+    "shortDescription": "跨平台 iOS 真机通信、沙盒取证与端口转发边界",
+    "longDescription": "基于 pymobiledevice3、iproxy 与 devicectl 划定宿主机与 iOS 真机交互的能力边界、安全红线与只读取证规范，支持 macOS、Windows 与 Linux。",
+    "developerName": "zhizhuodemao",
+    "category": "Developer Tools",
+    "capabilities": [
+      "iOS device inspection",
+      "Sandbox and AFC file extraction",
+      "Syslog and crash log capture",
+      "USB port forwarding"
+    ],
+    "defaultPrompt": [
+      "检查当前连接的 iOS 真机状态、版本与唯一性。",
+      "列出这台 iPhone 上已安装的用户应用并拉取目标沙盒副本。",
+      "转发 USB 端口并截取最近的关键字系统日志或崩溃报告。"
+    ]
+  }
+}

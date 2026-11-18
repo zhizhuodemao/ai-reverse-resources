@@ -13,7 +13,12 @@
             config:
               dir: skills/js
 
-          # 安卓 / iOS 技能就绪后按同样形状追加，例如：
+          - id: reverse-skills-ios
+            name: 'dsh-reverse-plugin'
+            config:
+              dir: skills/ios
+
+          # 安卓技能就绪后按同样形状追加，例如：
           # - id: reverse-skills-android
           #   name: 'dsh-reverse-plugin'
           #   config:

@@ -41,6 +41,7 @@ jobs:
         run: |
           mkdir -p skills
           cp -R ../../plugins/js-reverse-plugin/skills skills/js
+          cp -R ../../plugins/ios-reverse-plugin/skills skills/ios
 
       - name: Install dependencies
         if: steps.select.outputs.match == 'true'

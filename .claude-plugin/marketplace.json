@@ -10,6 +10,12 @@
       "source": "./plugins/js-reverse-plugin",
       "description": "JavaScript AST deobfuscation, controlled iv8 execution, JSVMP recovery, and browser evidence through js-reverse-mcp.",
       "version": "0.2.0"
+    },
+    {
+      "name": "ios-reverse-plugin",
+      "source": "./plugins/ios-reverse-plugin",
+      "description": "Cross-platform iOS physical device bridge via pymobiledevice3, iproxy, and devicectl.",
+      "version": "0.1.0"
     }
   ]
 }

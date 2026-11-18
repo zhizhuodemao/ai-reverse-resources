@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "ios-reverse-plugin",
+  "displayName": "iOS Reverse Plugin",
+  "version": "0.1.0",
+  "description": "Cross-platform iOS physical device bridge via pymobiledevice3, iproxy, and devicectl for device inspection, file pulling, logs, and port forwarding.",
+  "author": {
+    "name": "zhizhuodemao",
+    "url": "https://github.com/zhizhuodemao"
+  },
+  "homepage": "https://github.com/zhizhuodemao/ai-reverse-resources",
+  "repository": "https://github.com/zhizhuodemao/ai-reverse-resources",
+  "keywords": [
+    "ios",
+    "reverse-engineering",
+    "pymobiledevice3",
+    "iproxy",
+    "device-bridge"
+  ],
+  "mcpServers": "./.claude-mcp.json"
+}

@@ -71,6 +71,16 @@ test('the JS skills directory registers the three bundled skills', () => {
   }
 })
 
+test('the iOS skills directory registers ios-device-bridge', () => {
+  const skills = collectSkills('skills/ios')
+  assert.deepEqual(skills.map(skill => skill.name), ['ios-device-bridge'])
+  for (const skill of skills) {
+    assert.ok(skill.content.length > 0)
+    assert.ok(existsSync(skill.path))
+    assert.ok(existsSync(skill.resourceBase.path))
+  }
+})
+
 test('loading a mode writes no hidden preset files into DSH_HOME', () => {
   const home = mkdtempSync(join(tmpdir(), 'reverse-bundle-test-'))
   const previous = process.env.DSH_HOME
