@@ -84,7 +84,7 @@ DSH Desktop 用户请走方案 A，或在应用的 **插件** 页按包名 `dsh-
 
 需要 Node.js 24.9 或更新版本，以及 DSH `^0.2.1-rc.3`。
 
-插件同时发布在 npm：[dsh-reverse-plugin](https://www.npmjs.com/package/dsh-reverse-plugin)。
+插件同时发布在 npm：[dsh-reverse-plugin](https://www.npmjs.com/package/dsh-reverse-plugin)。收录条目、索引源与更新节奏见 [docs/market.md](docs/market.md)。
 
 ## 自选安装
 
@@ -115,6 +115,7 @@ claude plugin install <plugin-name>@ai-reverse-resources
 │       ├── preset/              # 预设文件（逆向模式，技能按领域分组）
 │       │   └── reverse.patch.yml
 │       └── tests/
+├── docs/                        # 文档（市场收录说明）
 ├── evals/                       # 技能评测
 ├── scripts/                     # 仓库校验
 └── .github/workflows/           # dsh 包发布流水线（tag 触发）
